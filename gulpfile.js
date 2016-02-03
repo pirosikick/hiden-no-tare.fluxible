@@ -13,7 +13,8 @@ const mergeStream = require('merge-stream');
 const src = {
   js: ['src/**/*.{js,jsx}'],
   webpack: ['src/client.js'],
-  css: ['src/styles/**/*.css', '!src/styles/**/_*.css', ]
+  css: ['src/styles/**/*.css', '!src/styles/**/_*.css', ],
+  test: ['test/**/*.js']
 };
 const tmp = {
   js: '.tmp/scripts',
@@ -30,7 +31,12 @@ gulp.task('default', ['start']);
 gulp.task('start', done => {
   run('clean', ['copy:tmp', 'start-server', 'watch'], done);
 });
-gulp.task('watch', ['webpack:watch', 'postcss:watch', 'babel:watch']);
+gulp.task('watch', [
+  'webpack:watch',
+  'postcss:watch',
+  'babel:watch',
+  'test:watch'
+]);
 gulp.task('build', done => {
   run('clean', ['copy:dist', 'webpack:min', 'postcss:min'], done);
 });
@@ -123,6 +129,9 @@ gulp.task('postcss:min', () => {
     .pipe($.postcss(plugins))
     .pipe(gulp.dest(dist.css));
 });
+
+gulp.task('test', () => gulp.src(src.test).pipe($.ava()));
+gulp.task('test:watch', () => gulp.watch(src.test, ['test']));
 
 const libs = [
   'node_modules/es6-promise/dist/es6-promise.min.js'
