@@ -7,7 +7,7 @@
     "url": "https://github.com/pirosikick/hiden-no-tare.fluxible/issues"
   },
   "dependencies": {
-    "es6-promise": "^3.0.2",
+    "es6-promise": "^3.1.2",
     "express": "^4.13.4",
     "fluxible": "^1.0.3",
     "fluxible-addons-react": "^0.2.3",
