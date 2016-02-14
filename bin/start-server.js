@@ -1,3 +1,4 @@
 #!/usr/bin/env node
-const listen = require('../lib/server').listen;
+require('babel-register');
+const listen = require('../src/server').listen;
 listen(process.env.NODE_PORT || 8080);

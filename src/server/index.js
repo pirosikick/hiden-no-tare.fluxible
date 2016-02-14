@@ -10,8 +10,8 @@ import errorRouter from './routers/error';
 const server = express();
 
 server.set('views', path.join(__dirname, 'views'));
-server.set('view engine', 'js');
-server.engine('js', createEngine({ transformViews: false }));
+server.set('view engine', 'jsx');
+server.engine('jsx', createEngine({ transformViews: false }));
 
 server.use(staticRouter);
 server.use(ssrRouter);

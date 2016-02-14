@@ -52,7 +52,7 @@ gulp.task('browser-sync', done => {
   });
 });
 
-gulp.task('nodemon', ['babel'], done => {
+gulp.task('nodemon', done => {
   $.nodemon({
     script: 'bin/start-server.js',
     ext: 'js jsx',
@@ -60,8 +60,6 @@ gulp.task('nodemon', ['babel'], done => {
       'gulpfile.js',
       'node_modules/'
     ],
-    watch: src.js,
-    tasks: ['babel'],
     env: { NODE_PORT, NODE_EVN: 'development' }
   }).on('start', () => {
     if (done) {
@@ -70,18 +68,6 @@ gulp.task('nodemon', ['babel'], done => {
     }
     browserSync.reload();
   });
-});
-
-gulp.task('babel', () => {
-  return gulp.src(src.js)
-    .pipe($.plumber())
-    .pipe($.babel())
-    .pipe($.plumber.stop())
-    .pipe(gulp.dest('lib'));
-});
-
-gulp.task('babel:watch', ['babel'], () => {
-  gulp.watch(src.js, ['babel']);
 });
 
 gulp.task('webpack', () => {
