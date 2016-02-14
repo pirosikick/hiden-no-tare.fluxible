@@ -34,14 +34,11 @@ gulp.task('start', done => {
 gulp.task('watch', [
   'webpack:watch',
   'postcss:watch',
-  'babel:watch',
   'test:watch'
 ]);
-gulp.task('build', done => {
-  run('clean', ['copy:dist', 'webpack:min', 'postcss:min'], done);
-});
-
-gulp.task('start-server', ['browser-sync', 'nodemon']);
+gulp.task('build', done =>
+  run('clean', ['copy:dist', 'webpack:min', 'postcss:min'], done));
+gulp.task('start-server', done => run('nodemon', 'browser-sync', done));
 
 const NODE_PORT = 8080;
 gulp.task('browser-sync', done => {
@@ -55,21 +52,31 @@ gulp.task('browser-sync', done => {
   });
 });
 
-gulp.task('nodemon', ['babel'], () => {
+gulp.task('nodemon', ['babel'], done => {
   $.nodemon({
     script: 'bin/start-server.js',
-    ext: 'js',
+    ext: 'js jsx',
     ignore: [
       'gulpfile.js',
+      'node_modules/'
     ],
-    env: { NODE_PORT }
+    watch: src.js,
+    tasks: ['babel'],
+    env: { NODE_PORT, NODE_EVN: 'development' }
+  }).on('start', () => {
+    if (done) {
+      done();
+      done = false;
+    }
+    browserSync.reload();
   });
 });
 
 gulp.task('babel', () => {
-  gulp.src(src.js)
+  return gulp.src(src.js)
     .pipe($.plumber())
     .pipe($.babel())
+    .pipe($.plumber.stop())
     .pipe(gulp.dest('lib'));
 });
 

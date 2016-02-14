@@ -1,7 +1,7 @@
 import {PropTypes} from 'react';
-import ApplicationStore from '../stores/ApplicationStore';
+import ApplicationStore from '../../stores/ApplicationStore';
 
-const HtmlComponent = props => (
+const Layout = props => (
   <html>
     <head>
       <meta charSet="utf-8" />
@@ -16,10 +16,10 @@ const HtmlComponent = props => (
   </html>
 );
 
-HtmlComponent.propTypes = {
+Layout.propTypes = {
   context: PropTypes.object.isRequired,
   markup: PropTypes.string.isRequired,
   state: PropTypes.string.isRequired
 };
 
-export default HtmlComponent;
+export default Layout;
