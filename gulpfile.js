@@ -5,9 +5,9 @@ const run = require('run-sequence');
 const del = require('del');
 const $ = require('gulp-load-plugins')();
 const browserSync = require('browser-sync').create();
-$.webpack = require('webpack-stream');
-const webpackConfig = require('./webpack.config');
-const UglifyJsPlugin = require('webpack').optimize.UglifyJsPlugin;
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
 const mergeStream = require('merge-stream');
 
 const src = {
@@ -32,7 +32,6 @@ gulp.task('start', done => {
   run('clean', ['copy:tmp', 'start-server', 'watch'], done);
 });
 gulp.task('watch', [
-  'webpack:watch',
   'postcss:watch',
   'test:watch'
 ]);
@@ -42,8 +41,24 @@ gulp.task('start-server', done => run('nodemon', 'browser-sync', done));
 
 const NODE_PORT = 8080;
 gulp.task('browser-sync', done => {
+  const webpackConfig = require('./webpack.config.dev');
+  const bundler = webpack(webpackConfig);
+
   browserSync.init({
-    proxy: `localhost:${NODE_PORT}`,
+    proxy: {
+      target: `localhost:${NODE_PORT}`,
+      middleware: [
+        webpackDevMiddleware(bundler, {
+          publicPath: webpackConfig.output.publicPath,
+          stats: {
+            colors: true,
+            hash: true,
+            chunks: false
+          }
+        }),
+        webpackHotMiddleware(bundler)
+      ]
+    },
     files: [
       '.tmp/**/*.{js,css}',
       'dist/**/*.{js,css}',
@@ -66,34 +81,22 @@ gulp.task('nodemon', done => {
       done();
       done = false;
     }
-    browserSync.reload();
   });
 });
 
-gulp.task('webpack', () => {
-  return gulp.src(src.webpack)
-    .pipe(named())
-    .pipe($.webpack(webpackConfig))
-    .pipe(gulp.dest(tmp.js));
-});
-
-gulp.task('webpack:watch', () => {
-  const config = Object.assign(webpackConfig, { watch: true });
-  gulp.src(src.webpack)
-    .pipe($.plumber())
-    .pipe(named())
-    .pipe($.webpack(config))
-    .pipe(gulp.dest(tmp.js));
-});
-
-gulp.task('webpack:min', () => {
-  const plugins = [new UglifyJsPlugin()];
-  const devtool = false;
-  const config = Object.assign(webpackConfig, { plugins, devtool });
-  return gulp.src(src.webpack)
-    .pipe(named())
-    .pipe($.webpack(config))
-    .pipe(gulp.dest(dist.js));
+gulp.task('webpack:min', done => {
+  const webpackConfig = require('./webpack.config');
+  webpack(webpackConfig, (err, stats) => {
+    if(err) {
+      throw new $.util.PluginError("webpack", err);
+    }
+    $.util.log('[webpack]', stats.toString({
+      colors: true,
+      hash: true,
+      chunks: false
+    }));
+    done();
+  });
 });
 
 gulp.task('postcss', () => {
