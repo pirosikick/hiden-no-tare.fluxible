@@ -23,7 +23,7 @@
     "ava": "^0.12.0",
     "babel-core": "^6.5.2",
     "babel-loader": "^6.2.2",
-    "babel-plugin-react-transform": "^2.0.0",
+    "babel-plugin-react-transform": "^2.0.1",
     "babel-plugin-transform-class-properties": "^6.5.2",
     "babel-plugin-transform-decorators": "^6.5.0",
     "babel-plugin-transform-runtime": "^6.5.2",
