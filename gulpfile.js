@@ -27,7 +27,7 @@ const dist = {
 
 gulp.task('default', ['start']);
 gulp.task('start', done => {
-  run('clean', ['copy:tmp', 'start-server', 'watch'], done);
+  run('clean', ['copy:tmp', 'webpack', 'start-server', 'watch'], done);
 });
 gulp.task('watch', () => {
   gulp.watch(src.css, ['postcss']);
