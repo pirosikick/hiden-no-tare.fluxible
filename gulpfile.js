@@ -4,10 +4,8 @@ const named = require('vinyl-named');
 const run = require('run-sequence');
 const del = require('del');
 const $ = require('gulp-load-plugins')();
+$.webpack = require('webpack-stream');
 const browserSync = require('browser-sync').create();
-const webpack = require('webpack');
-const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
 const mergeStream = require('merge-stream');
 
 const src = {
@@ -31,33 +29,20 @@ gulp.task('default', ['start']);
 gulp.task('start', done => {
   run('clean', ['copy:tmp', 'start-server', 'watch'], done);
 });
-gulp.task('watch', [
-  'postcss:watch',
-  'test:watch'
-]);
+gulp.task('watch', () => {
+  gulp.watch(src.css, ['postcss']);
+  gulp.watch(src.test, ['test']);
+  gulp.watch(src.js, ['webpack']);
+});
 gulp.task('build', done =>
   run('clean', ['copy:dist', 'webpack:min', 'postcss:min'], done));
 gulp.task('start-server', done => run('nodemon', 'browser-sync', done));
 
 const NODE_PORT = 8080;
 gulp.task('browser-sync', done => {
-  const webpackConfig = require('./webpack.config.dev');
-  const bundler = webpack(webpackConfig);
-
   browserSync.init({
     proxy: {
-      target: `localhost:${NODE_PORT}`,
-      middleware: [
-        webpackDevMiddleware(bundler, {
-          publicPath: webpackConfig.output.publicPath,
-          stats: {
-            colors: true,
-            hash: true,
-            chunks: false
-          }
-        }),
-        webpackHotMiddleware(bundler)
-      ]
+      target: `localhost:${NODE_PORT}`
     },
     files: [
       '.tmp/**/*.{js,css}',
@@ -84,19 +69,17 @@ gulp.task('nodemon', done => {
   });
 });
 
-gulp.task('webpack:min', done => {
-  const webpackConfig = require('./webpack.config');
-  webpack(webpackConfig, (err, stats) => {
-    if(err) {
-      throw new $.util.PluginError("webpack", err);
-    }
-    $.util.log('[webpack]', stats.toString({
-      colors: true,
-      hash: true,
-      chunks: false
-    }));
-    done();
-  });
+
+gulp.task('webpack', () => {
+  return gulp.src('src/client.js')
+    .pipe($.webpack(require('./webpack.config.dev')))
+    .pipe(gulp.dest('.tmp/scripts'));
+});
+
+gulp.task('webpack:min', () => {
+  return gulp.src('src/client.js')
+    .pipe($.webpack(require('./webpack.config')))
+    .pipe(gulp.dest('dist/scripts'));
 });
 
 gulp.task('postcss', () => {
@@ -127,7 +110,6 @@ gulp.task('postcss:min', () => {
 });
 
 gulp.task('test', () => gulp.src(src.test).pipe($.ava()));
-gulp.task('test:watch', () => gulp.watch(src.test, ['test']));
 
 const libs = [
   'node_modules/es6-promise/dist/es6-promise.min.js'
