@@ -46,7 +46,7 @@
     "react-transform-hmr": "^1.0.4",
     "run-sequence": "^1.1.5",
     "vinyl-named": "^1.1.0",
-    "webpack": "^1.12.14",
+    "webpack": "^1.12.15",
     "webpack-stream": "^3.1.0"
   },
   "homepage": "https://github.com/pirosikick/hiden-no-tare.fluxible",
