@@ -61,5 +61,9 @@
     "fixpack": "fixpack",
     "start": "gulp",
     "test": "ava"
+  },
+  "ava": {
+    "babel": "inherit",
+    "require": ["babel-register"]
   }
 }
