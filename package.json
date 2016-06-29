@@ -32,6 +32,7 @@
     "browser-sync": "^2.13.0",
     "cssnano": "^3.7.1",
     "del": "^2.2.1",
+    "enzyme": "^2.3.0",
     "fixpack": "^2.3.1",
     "gulp": "^3.9.1",
     "gulp-ava": "^0.12.1",
@@ -41,8 +42,10 @@
     "gulp-postcss": "^6.1.1",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-util": "^3.0.7",
+    "jsdom": "^9.3.0",
     "merge-stream": "^1.0.0",
     "precss": "^1.4.0",
+    "react-addons-test-utils": "^15.1.0",
     "react-transform-hmr": "^1.0.4",
     "run-sequence": "^1.2.1",
     "vinyl-named": "^1.1.0",
@@ -63,7 +66,20 @@
     "test": "ava"
   },
   "ava": {
-    "babel": "inherit",
-    "require": ["babel-register"]
+    "babel": {
+      "plugins": [
+        "transform-runtime",
+        "transform-decorators",
+        "transform-class-properties"
+      ],
+      "presets": [
+        "es2015",
+        "react"
+      ],
+      "sourceMaps": "inline"
+    },
+    "require": [
+      "babel-register"
+    ]
   }
 }
