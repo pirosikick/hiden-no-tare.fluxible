@@ -15,7 +15,7 @@
     "fluxible-addons-react": "^0.2.8",
     "fluxible-router": "^0.4.15",
     "react": "^0.14.8",
-    "react-dom": "^0.14.8",
+    "react-dom": "^15.3.0",
     "serialize-javascript": "^1.3.0"
   },
   "devDependencies": {
