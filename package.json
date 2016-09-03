@@ -42,7 +42,7 @@
     "gulp-postcss": "^6.1.1",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-util": "^3.0.7",
-    "jsdom": "^9.3.0",
+    "jsdom": "^9.5.0",
     "merge-stream": "^1.0.0",
     "precss": "^1.4.0",
     "react-addons-test-utils": "^15.1.0",
