@@ -36,7 +36,7 @@
     "fixpack": "^2.3.1",
     "gulp": "^3.9.1",
     "gulp-ava": "^0.12.1",
-    "gulp-load-plugins": "^1.2.4",
+    "gulp-load-plugins": "^1.4.0",
     "gulp-nodemon": "^2.1.0",
     "gulp-plumber": "^1.1.0",
     "gulp-postcss": "^6.1.1",
