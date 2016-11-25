@@ -43,7 +43,7 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-util": "^3.0.7",
     "jsdom": "^9.3.0",
-    "merge-stream": "^1.0.0",
+    "merge-stream": "^1.0.1",
     "precss": "^1.4.0",
     "react-addons-test-utils": "^15.1.0",
     "react-transform-hmr": "^1.0.4",
