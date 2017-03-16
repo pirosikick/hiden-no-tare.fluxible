@@ -22,7 +22,7 @@
     "autoprefixer": "^6.3.6",
     "ava": "^0.15.2",
     "babel-core": "^6.10.4",
-    "babel-loader": "^6.2.4",
+    "babel-loader": "^6.4.1",
     "babel-plugin-react-transform": "^2.0.2",
     "babel-plugin-transform-class-properties": "^6.10.2",
     "babel-plugin-transform-decorators": "^6.8.0",
